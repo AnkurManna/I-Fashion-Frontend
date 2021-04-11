@@ -5,6 +5,8 @@ import {Router ,Switch,NavLink} from 'react-router';
 import LandingPage from './component/LandingPage';
 import Entry from './component/Entry';
 import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
+
 const axios = require('axios');
 
 function App() {
@@ -25,6 +27,11 @@ function App() {
   })*/
   const [cook,setcook]=useState('');
 
+   useEffect(()=>{
+    const cookies = new Cookies();
+    setcook(cookies.get("loggedIn"));
+  })
+
   const chk = (e =>{
     axios.get('http://localhost:8080/check',{ withCredentials: true }).then(res=>{console.log(res)}).catch(e=>{console.log(e)})
   })
@@ -34,7 +41,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-      {cook?<LandingPage/>:<Entry ck={cook} setck={setcook}/>}
+      {cook?<LandingPage ck={cook} setck={setcook} />:<Entry ck={cook} setck={setcook}/>}
       </header>
 
      
