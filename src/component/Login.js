@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-function Login({flag,func,ck,setck})
+function Login({flag,func,ck,setck,setAdmin})
 {
     const [mail,setmail] = useState('');
     const [password,setpassword] = useState('');
@@ -17,12 +17,13 @@ function Login({flag,func,ck,setck})
         console.log(response);
         const cookies = new Cookies();
         setck(cookies.get("loggedIn"));
+        setAdmin(true);
         
     })
     .catch(function (error) {
         console.log(error);
     });
-
+    
     })
 
     const toggle = (()=>{

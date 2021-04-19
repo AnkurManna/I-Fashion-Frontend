@@ -1,8 +1,7 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {useState} from 'react';
-import Card from './Card.js';
-function LandingPage ({ck,setck,admin,setAdmin})
+function LandingPage ({ck,setck})
 {
     const logout =  (e=>{
         e.preventDefault();
@@ -21,18 +20,14 @@ function LandingPage ({ck,setck,admin,setAdmin})
         console.log(error);
     });
 })
-    
+    const [admin,setAdmin]=useState(false);
     const [credential,setCredential] = useState('');
-    const [data,setdate] = useState('');
-
+    
     return (
         <>
-        <h1>Here is landing page for user</h1>
+        <h1>Here is landing page for Admin</h1>
         
         <span><button onClick={logout}> Logout</button></span>
-       
-        
-        {data.length>0&&data.map((item)=><Card val={item} people='User'/>)}
         </>
 
     );

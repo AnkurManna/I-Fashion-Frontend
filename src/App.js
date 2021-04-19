@@ -1,13 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import {Router ,Switch,NavLink} from 'react-router';
+import {Router ,Switch,NavLink,Route} from 'react-router-dom';
 import LandingPage from './component/LandingPage';
+import LandingPageAdmin from './component/LandingPageAdmin';
 import Entry from './component/Entry';
 import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
-
+import { createBrowserHistory } from "history";
+import styles from './myStyles.module.css';
 const axios = require('axios');
+
+
 
 function App() {
 
@@ -25,11 +29,14 @@ function App() {
       console.log(error);
     });
   })*/
+  const history = createBrowserHistory();
   const [cook,setcook]=useState('');
-
+  const [admin,setAdmin] = useState(false)
+  
    useEffect(()=>{
     const cookies = new Cookies();
     setcook(cookies.get("loggedIn"));
+
   })
 
   const chk = (e =>{
@@ -40,14 +47,44 @@ function App() {
   })
   return (
     <div className="App">
-      <header className="App-header">
-      {cook?<LandingPage ck={cook} setck={setcook} />:<Entry ck={cook} setck={setcook}/>}
-      </header>
+      
 
-     
+      <Router history={history}>
+          <div >
+
+            <span>
+           
+                {!admin&&<NavLink to='/userLogin' exact >Users</NavLink>}
+                </span>
+              
+                <span > 
+                <NavLink to='/adminlogin'  exact >Admin</NavLink>
+                </span>
+
+          
+          
+          </div>
 
       
-       
+        <Switch>
+        <div >
+        
+        {!admin&&<Route exact path="/userlogin" >
+        {cook?<LandingPage ck={cook} setck={setcook} admin={admin} setAdmin={setAdmin} />:<Entry ck={cook} setck={setcook} admin={admin} setAdmin={setAdmin} peo="user"/>}
+        </Route>}
+        <Route exact path="/adminlogin">
+        {cook?<LandingPageAdmin ck={cook} setck={setcook} admin={admin} setAdmin={setAdmin}/>:<Entry ck={cook} setck={setcook} admin={admin} setAdmin={setAdmin} peo="admin"/>}
+        </Route>
+
+        
+        </div>
+        
+        </Switch>
+        </Router>
+
+
+   
+
 
     </div>
   );
