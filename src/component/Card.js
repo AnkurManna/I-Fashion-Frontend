@@ -6,19 +6,25 @@ import styles from '../myStyles.module.css';
 import axios from 'axios';
 import {useState} from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-const Card = ({val,people}) => {
+const Card = ({ck,val,people}) => {
 
-    const [updvisibility ,setUpdvisibility] = useState(false);
-    const [ArrivalCity, setArrivalCity] = useState('');
-    const [DepartureCity, setDepartureCity] = useState('');
-    const [Start, setStart] = useState('');
-    const [End, setEnd] = useState('');
-    const [Cost, setCost] = useState('');
-    const [IsSpecial, setSpecial] = useState(1);
+    const [brand ,setbrand] = useState('');
+    const [type, settype] = useState('');
+    const [price, setprice] = useState('');
+    const [gender, setgender] = useState('');
+    const [current_discount, setcurrent_discount] = useState('');
+    const [updvisibility,setupdvisibility] = useState(false);
+    const [discount_duration,setdiscount_duration]=useState('');
+    const [arrivaldate,setarrivaldate]=useState('');
+    const [new_arrival,setnew_arrival] = useState(false);
+    const instance = axios.create({
+        withCredentials: true
+      })
     const del = (id) =>{
-        let apiUrl = 'http://localhost:8080/Test1/dr';
-        apiUrl = apiUrl+'?' + "Id=" +id+'&op=' + 'delete';
-        axios.get(apiUrl)
+        console.log(id);
+        let apiUrl = 'http://localhost:8080/item/deleteitem/';
+        apiUrl = apiUrl+id;
+        instance.delete(apiUrl)
         .then(res=>{
             console.log(res)
         })
@@ -26,23 +32,26 @@ const Card = ({val,people}) => {
             console.log(e);
         })
     }
-
+   
+      
     const upd = (id) => {
-        setUpdvisibility(!updvisibility);
-        setArrivalCity(val.arrivalCity);
-        setDepartureCity(val.departureCity);
-        setCost(val.cost);
-        setStart(val.startTime);
-        setEnd(val.endTime);
-        setSpecial(val.isSpecial);
+        setupdvisibility(!updvisibility);
+        setprice(val.price);
+        settype(val.type);
+        setgender(val.gender);
+        setbrand(val.starbrand);
+        setcurrent_discount(val.current_discount);
+        setdiscount_duration(val.discount_duration);
+        setarrivaldate(val.arrivaldate);
+        setnew_arrival(val.new_arrival);
+        update(id);
     }
     const update = (id) =>{
-        let val = {ArrivalCity:ArrivalCity,DepartureCity:DepartureCity,StartTime:Start,EndTime:End,Cost:Cost,IsSpecial:IsSpecial};
-        const apiUrl = 'http://localhost:8080/Test1/dr';
+        let val = {id:id,brand:brand,type:type,gender:gender,current_discount:current_discount,discount_duration:discount_duration,price:price,new_arrival:new_arrival,arrivaldate:arrivaldate};
+        let apiUrl = 'http://localhost:8080/item/updateItem/';
         console.log(val);
-      val["op"]="update";
-      val["Id"] = id;
-      axios.post(apiUrl,val)
+      apiUrl = apiUrl + id;
+      instance.put(apiUrl,val)
       .then((response)=>console.log(response))
       .catch(e=>{console.log(e)})
     }
@@ -64,34 +73,22 @@ const Card = ({val,people}) => {
       <Modal isOpen={updvisibility} >
           <form>
       <div className='form-control'>
-            <label>ArrivalCity</label>
-            <input type='text' placeholder='ArrivalCity'  value={ArrivalCity} onChange={(e)=>setArrivalCity(e.target.value)}/>
+            <label>type</label>
+            <input type='text' placeholder='type'  value={type} onChange={(e)=>settype(e.target.value)}/>
         </div>
 
         <div className='form-control'>
-            <label>DepartureCity</label>
-            <input type='text' placeholder='DepartureCity' value={DepartureCity}  onChange={(e)=>setDepartureCity(e.target.value)}/>
+            <label>brand</label>
+            <input type='text' placeholder='brand' value={brand}  onChange={(e)=>setbrand(e.target.value)}/>
         </div>
 
         <div className='form-control'>
-            <label>StartingDate</label>
-            <input type='text' placeholder='StartingDate' value={Start} onChange={(e)=>setStart(e.target.value)}/>
+            <label>Gender</label>
+            <input type='text' placeholder='Gender' value={gender} onChange={(e)=>setgender(e.target.value)}/>
         </div>
 
-        <div className='form-control'>
-            <label>EndingDate</label>
-            <input type='text' placeholder='EndingDate' value={End} onChange={(e)=>setEnd(e.target.value)}/>
-        </div>
-
-        <div className='form-control'>
-            <label>Cost</label>
-            <input type='text' placeholder='Cost' value={Cost} onChange={(e)=>setCost(e.target.value)}/>
-        </div>
-
-        <div className='form-control'>
-            <label>Speciality</label>
-            <input type='text' placeholder='IsSpecial' value={IsSpecial} onChange={(e)=>setSpecial(e.target.value)}/>
-        </div>
+        
+        
         <ModalFooter>
           <Button color="primary" onClick={update(val.id)}>update</Button>{' '}
           <Button color="secondary" onClick={upd}>Cancel</Button>

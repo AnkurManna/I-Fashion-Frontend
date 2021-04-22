@@ -37,7 +37,7 @@ function App() {
     const cookies = new Cookies();
     setcook(cookies.get("loggedIn"));
 
-  })
+  },[])
 
   const chk = (e =>{
     axios.get('http://localhost:8080/check',{ withCredentials: true }).then(res=>{console.log(res)}).catch(e=>{console.log(e)})
@@ -69,7 +69,7 @@ function App() {
         <Switch>
         <div >
         
-        {!admin&&<Route exact path="/userlogin" >
+        {<Route exact path="/userlogin" >
         {cook?<LandingPage ck={cook} setck={setcook} admin={admin} setAdmin={setAdmin} />:<Entry ck={cook} setck={setcook} admin={admin} setAdmin={setAdmin} peo="user"/>}
         </Route>}
         <Route exact path="/adminlogin">
