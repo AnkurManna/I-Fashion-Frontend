@@ -11,15 +11,16 @@ function LandingPage ({ck,setck,admin,setAdmin})
       
     const logout =  (e=>{
         e.preventDefault();
-    axios.get('http://localhost:8080/logout', {
+    axios.get('https://localhost:8443/lgout', {
         
         withCredentials: true 
     })
     .then(function (response) {
         console.log(response);
         const cookies = new Cookies();
-        setck(cookies.get("loggedIn"));
+        //setck(cookies.get("loggedIn"));
         setAdmin(false);
+        window.location.reload();
         
     })
     .catch(function (error) {
@@ -31,10 +32,10 @@ function LandingPage ({ck,setck,admin,setAdmin})
     const [data,setdata] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:8080/item/findallItems', {
+        axios.get('https://localhost:8443/item/findallItems', {
         
         withCredentials: true 
-    })
+    },[data])
     .then(function (response) {
         console.log(response);
         setdata(response.data);

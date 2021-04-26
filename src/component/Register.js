@@ -8,7 +8,7 @@ const Register = ({flag,func}) => {
     const [password, setpassword] = useState('');
     const [gender, setgender] = useState('');
     
-    const apiUrl = 'http://localhost:8080/adduser';
+    const apiUrl = 'https://localhost:8443/adduser';
     const onAdd = (val) =>{
     
     axios.post(apiUrl,val)

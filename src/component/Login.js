@@ -7,7 +7,7 @@ function Login({flag,func,ck,setck,setAdmin})
     const [password,setpassword] = useState('');
     const login =  (e=>{
         e.preventDefault();
-    axios.get('http://localhost:8080/login', {
+    axios.get('https://localhost:8443/login', {
         params:{
         mail:mail,
         password:password},
@@ -16,8 +16,8 @@ function Login({flag,func,ck,setck,setAdmin})
     .then(function (response) {
         console.log(response);
         const cookies = new Cookies();
-        setck(cookies.get("loggedIn"));
-        setAdmin(true);
+       // setck(cookies.get("loggedIn"));
+        window.location.reload();
         
     })
     .catch(function (error) {
