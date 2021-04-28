@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import {useState,useEffect} from 'react';
 import Card from './Card.js';
-
+import Searcheditem from './Searcheditem';
 function LandingPage ({ck,setck,admin,setAdmin})
 {
     const instance = axios.create({
@@ -30,6 +30,8 @@ function LandingPage ({ck,setck,admin,setAdmin})
     
     const [credential,setCredential] = useState('');
     const [data,setdata] = useState('');
+    const NEWARRIVAL = 'newarrivals';
+    const DISCOUNTED = 'discounts';
 
     useEffect(() => {
         axios.get('https://localhost:8443/item/findallItems', {
@@ -37,7 +39,7 @@ function LandingPage ({ck,setck,admin,setAdmin})
         withCredentials: true 
     },[data])
     .then(function (response) {
-        console.log(response);
+        console.log(response.data);
         setdata(response.data);
         
         
@@ -46,7 +48,42 @@ function LandingPage ({ck,setck,admin,setAdmin})
         console.log(error);
     })
         
-    }, [])
+    }, []);
+    const [searched,setsearched] = useState([]);
+    const [curtype,setcurtype] = useState([]);
+    const [showsearched,setshowsearched] = useState(false) ;
+    
+    
+    const GetSearched = (pref) =>{
+        setcurtype(pref);
+        let apiUri = 'https://localhost:8443/item/';
+        if(pref!==NEWARRIVAL&&pref!==DISCOUNTED)
+        apiUri = apiUri + 'searchitem/';
+
+        apiUri = apiUri + pref;
+        axios.get(apiUri, {
+        
+        withCredentials: true 
+    },[data])
+    .then(function (response) {
+        console.log(response.data.data);
+        setsearched(response.data);
+        setshowsearched(true);
+
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
+
+    
+
+    }
+
+    const search = () =>{
+
+        var x = document.getElementById('searchtype').value;
+        GetSearched(x);
+    }
 
     return (
         <>
@@ -55,17 +92,31 @@ function LandingPage ({ck,setck,admin,setAdmin})
         <span><button onClick={logout}> Logout</button></span>
         <label>
     Choose a browser from this list:
-    <input list="browsers" name="myBrowser" />  
-</label>   
-<datalist id="browsers">
-    <option value="Chrome" />
-    <option value="Firefox" />
-    <option value="Internet Explorer" />
-    <option value="Opera" />
-    <option value="Safari" />
-    <option value="Microsoft Edge" />   
-</datalist>
+    <input type='text' list='data' placeholder='search' id='searchtype'/>
 
+    <datalist id="item">
+    <option value="Shirt" />
+    <option value="T-Shirt" />
+    <option value="Jeans" />
+    <option value="Blazer" />
+    <option value="aa" />
+
+    </datalist>
+
+    <button onClick={search}>search</button>
+</label>   
+
+
+        <button onClick={()=>GetSearched(NEWARRIVAL)}>New Arrivals</button>
+        <button onClick={()=>GetSearched(DISCOUNTED)}>Discounts</button>
+
+
+        {showsearched&& 
+            
+            <Searcheditem ck={ck} data={searched} type={curtype}/>
+        }
+
+      
 
         {data.length>0&&data.map((item)=><Card ck={ck} val={item} people='User'/>)}
         </>

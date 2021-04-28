@@ -98,3 +98,9 @@ color: white;
     border:2 px solid black;
     text-align: center;
 }
+
+.Searcheditem
+{
+    border: 2px solid red;
+    background-color: yellow;
+}

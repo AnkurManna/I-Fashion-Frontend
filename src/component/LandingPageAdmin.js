@@ -57,22 +57,21 @@ function LandingPage ({ck,setck})
     search anything from this list:
     <input list="browsers" name="myBrowser" />  
 </label>   
-<datalist id="browsers">
-    <option value="Chrome" />
-    <option value="Firefox" />
-    <option value="Internet Explorer" />
-    <option value="Opera" />
-    <option value="Safari" />
-    <option value="Microsoft Edge" />   
-</datalist>
+    <datalist id="browsers">
+        <option value="Chrome" />
+        <option value="Firefox" />
+        <option value="Internet Explorer" />
+        <option value="Opera" />
+        <option value="Safari" />
+        <option value="Microsoft Edge" />   
+    </datalist>
 <button onClick={search}>search</button>
+
+        
 
         {data.length>0&&data.map((item)=><Card val={item} people='Admin'/>)}
 
         </>
-
-
-
     );
 }
 

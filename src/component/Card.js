@@ -12,17 +12,17 @@ const Card = ({ck,val,people}) => {
     const [type, settype] = useState('');
     const [price, setprice] = useState('');
     const [gender, setgender] = useState('');
-    const [current_discount, setcurrent_discount] = useState('');
+    const [currentdiscount, setcurrentdiscount] = useState('');
     const [updvisibility,setupdvisibility] = useState(false);
-    const [discount_duration,setdiscount_duration]=useState('');
+    const [discountduration,setdiscountduration]=useState('');
     const [arrivaldate,setarrivaldate]=useState('');
-    const [new_arrival,setnew_arrival] = useState(false);
+    const [newarrival,setnewarrival] = useState(false);
     const instance = axios.create({
         withCredentials: true
       })
     const del = (id) =>{
         console.log(id);
-        let apiUrl = 'http://localhost:8080/item/deleteitem/';
+        let apiUrl = 'https://localhost:8443/admin/item/deleteitem/';
         apiUrl = apiUrl+id;
         instance.delete(apiUrl)
         .then(res=>{
@@ -40,15 +40,15 @@ const Card = ({ck,val,people}) => {
         settype(val.type);
         setgender(val.gender);
         setbrand(val.starbrand);
-        setcurrent_discount(val.current_discount);
-        setdiscount_duration(val.discount_duration);
+        setcurrentdiscount(val.currentdiscount);
+        setdiscountduration(val.discountduration);
         setarrivaldate(val.arrivaldate);
-        setnew_arrival(val.new_arrival);
+        setnewarrival(val.newarrival);
         update(id);
     }
     const update = (id) =>{
-        let val = {id:id,brand:brand,type:type,gender:gender,current_discount:current_discount,discount_duration:discount_duration,price:price,new_arrival:new_arrival,arrivaldate:arrivaldate};
-        let apiUrl = 'http://localhost:8080/item/updateItem/';
+        let val = {id:id,brand:brand,type:type,gender:gender,currentdiscount:currentdiscount,discountduration:discountduration,price:price,newarrival:newarrival,arrivaldate:arrivaldate};
+        let apiUrl = 'https://localhost:8443/admin/item/updateItem/';
         console.log(val);
       apiUrl = apiUrl + id;
       instance.put(apiUrl,val)
@@ -62,8 +62,8 @@ const Card = ({ck,val,people}) => {
     <span  className={styles.info}>Type : {val.type}</span>
     <span  className={styles.info}>Price : ₹{val.price}</span>
     <span  className={styles.info}>Gender: {val.gender}</span>
-    <span  className={styles.info}>Current Discount: {val.current_discount}</span>
-    <span  className={styles.info}>Discount Duration: {val.discount_duration}</span>
+    <span  className={styles.info}>Current Discount: {val.currentdiscount}</span>
+    <span  className={styles.info}>Discount Duration: {val.discountduration}</span>
 
     {people==='User'?<span><button className={styles.mybtn}>Book</button></span>:<span  ><button className={styles.mybtn} onClick={()=>upd(val)}>Update</button>
     <button className={styles.mybtn} onClick={()=>del(val.id)}>Delete</button></span>}
@@ -85,6 +85,16 @@ const Card = ({ck,val,people}) => {
         <div className='form-control'>
             <label>Gender</label>
             <input type='text' placeholder='Gender' value={gender} onChange={(e)=>setgender(e.target.value)}/>
+        </div>
+
+        <div className='form-control'>
+            <label>Price</label>
+            <input type='text' placeholder='Gender' value={price} onChange={(e)=>setprice(e.target.value)}/>
+        </div>
+
+        <div className='form-control'>
+            <label>Current Discount</label>
+            <input type='text' placeholder='Gender' value={currentdiscount} onChange={(e)=>setcurrentdiscount(e.target.value)}/>
         </div>
 
         
